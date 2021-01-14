@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.MainMapper">
+	
+	<select id="n1905" parameterType="object" resultType="hashmap">
+		/*n1905*/
+		select * from t_member order by sort
+	</select> 
+	<select id="n2002_select" parameterType="object" resultType="hashmap">
+		/*n2002 select 옵션들*/
+		SELECT 
+			congress_seq,
+		    name,
+		    team,
+		    team_info
+		FROM 
+			t_congress
+		group by
+			name
+		order by
+			case 
+				when team = '더불어민주당' then 1
+		        when team = '더불어시민당' then 2
+		        when team = '미래통합당' then 3
+		        when team = '미래한국당' then 5
+		        when team = '정의당' then 6
+		        when team = '민생당' then 7
+		        when team = '민중당' then 8
+		        when team = '열린민주단' then 9
+		        when team = '우리공화단' then 10 
+		        when team = '찬박신당' then 11
+		        when team = '한국경제단' then 12
+		        when team = '무소속' then 13
+		        when team = '국민의당' then 14
+		        when team = '바른미래당' then 15
+		        when team = '새누리당' then 16
+		        when team = '자유한국당' then 17
+		        else 18
+			end, name
+	</select> 
+	<select id="n2002_rank" parameterType="object" resultType="hashmap">
+		/*n2002 랭킹*/
+		SELECT 
+			c.*,
+			price_${year} price
+		FROM 
+			t_congress c
+		order by
+			price_${year}_+0 desc
+		limit
+			0, 10
+			
+	</select> 
+	<select id="n2002_read" parameterType="object" resultType="hashmap">
+		/*n2002 상세정보*/
+		SELECT 
+			c.*
+		FROM 
+			t_congress c
+		where
+			congress_seq = #{seq}
+	</select> 
+	<select id="n2002_300" parameterType="object" resultType="hashmap">
+		/*n2002 300*/
+		SELECT 
+			c.*
+		FROM 
+			t_congress_name c
+		where
+			congress_seq = #{seq}
+	</select>  
+	<select id="t_congress_read" parameterType="object" resultType="hashmap">
+		/*t_congress_read*/
+		SELECT 
+			c.*
+		FROM 
+			t_congress_name c
+		where
+			name = #{name} and
+			year = #{year} and
+			congress_seq = #{congress_seq}
+	</select> 
+	<select id="t_congress_info_list" parameterType="object" resultType="hashmap">
+		/*t_congress_info_list*/
+		SELECT 
+			c.*
+		FROM 
+			t_congress_info c
+		where
+			name_seq = #{name_seq}
+		order by
+			year asc
+	</select> 
+</mapper>
